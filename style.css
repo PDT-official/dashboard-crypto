@@ -125,4 +125,8 @@ footer {
         margin-bottom: 2px;
     }
 }
+.hot-asset {
+    border-left: 4px solid #3fb950;
+    background-color: rgba(63, 185, 80, 0.1);
+}
 
