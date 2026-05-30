@@ -1,12 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Crypto</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Dashboard Crypto</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>Dashboard Crypto</h1>
-  <script src="script.js"></script>
+
+    <header>
+        <h1>Dashboard Crypto – Monitoraggio Automatico</h1>
+        <p>20 asset in osservazione continua</p>
+    </header>
+
+    <main>
+        <table id="assetTable">
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Prezzo</th>
+                    <th>Trend</th>
+                    <th>Volume</th>
+                    <th>Momentum</th>
+                    <th>Segnale</th>
+                </tr>
+            </thead>
+
+            <tbody id="assetTableBody">
+                <!-- I dati verranno inseriti automaticamente da renderTable.js -->
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>Dashboard Crypto – Powered by GitHub Pages</p>
+    </footer>
+
+    <!-- Script principale -->
+    <script src="script.js"></script>
+
+    <!-- Moduli -->
+    <script src="modules/fetchData.js"></script>
+    <script src="modules/computeSignals.js"></script>
+    <script src="modules/renderTable.js"></script>
+    <script src="modules/highlightHotAssets.js"></script>
+    <script src="modules/utils.js"></script>
+
 </body>
 </html>
