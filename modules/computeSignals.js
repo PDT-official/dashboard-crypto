@@ -1,4 +1,3 @@
- ====== computeSignals.js ======
 // Modulo per calcolare trend, momentum, volume e segnale finale
 
 export function computeSignals(rawData) {
