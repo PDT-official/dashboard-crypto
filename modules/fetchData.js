@@ -1,51 +1,72 @@
-// ====== fetchData.js ======
-// Versione stabile per GitHub Pages (con proxy AllOrigins)
+// ===============================
+//   FETCH DATA — COINGECKO
+// ===============================
 
-// Carica lista asset
-async function fetchAssetList() {
-    try {
-        const response = await fetch("./data/asset-list.json");
-        return await response.json();
-    } catch (error) {
-        console.error("Errore asset-list.json:", error);
-        return [];
-    }
+// Lista asset (CoinGecko IDs)
+const assetList = [
+  "bitcoin",
+  "ethereum",
+  "binancecoin",
+  "cardano",
+  "ripple",
+  "solana",
+  "avalanche-2",
+  "polkadot",
+  "chainlink",
+  "polygon",
+  "cosmos",
+  "litecoin",
+  "ethereum-classic",
+  "stellar",
+  "near",
+  "aptos",
+  "arbitrum",
+  "optimism",
+  "filecoin",
+  "aave",
+  "ondo-finance"   // AGGIUNTO
+];
+
+// Funzione per ottenere i dati da CoinGecko
+async function fetchAssetData(assetId) {
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/${assetId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Errore CoinGecko: ${response.status}`);
+
+    const data = await response.json();
+
+    return {
+      id: assetId,
+      price: data.market_data.current_price.usd,
+      change24h: data.market_data.price_change_percentage_24h,
+      volume: data.market_data.total_volume.usd,
+      marketCap: data.market_data.market_cap.usd
+    };
+
+  } catch (error) {
+    console.error(`[ERRORE] Asset ${assetId}:`, error);
+    return null;
+  }
 }
 
-// Proxy AllOrigins
-function proxiedUrl(asset) {
-    const binanceUrl = `https://api.binance.com/api/v3/ticker/24hr?symbol=${asset}`;
-    return `https://api.allorigins.win/raw?url=${encodeURIComponent(binanceUrl)}`;
+// Funzione principale per aggiornare la dashboard
+async function updateDashboard() {
+  console.log("[INFO] Aggiornamento dati in corso...");
+
+  const results = await Promise.all(assetList.map(fetchAssetData));
+
+  const validResults = results.filter(r => r !== null);
+
+  console.log("[INFO] Dati aggiornati:", validResults);
+
+  // Qui aggiorni la UI
+  updateUI(validResults);
 }
 
-async function fetchTicker(asset) {
-    const url = proxiedUrl(asset);
+// Aggiorna ogni 60 secondi
+setInterval(updateDashboard, 60000);
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        return {
-            asset: asset,
-            price: parseFloat(data.lastPrice),
-            volume: parseFloat(data.volume),
-            change: parseFloat(data.priceChangePercent)
-        };
-
-    } catch (error) {
-        console.error("Errore fetch ticker:", asset, error);
-        return null;
-    }
-}
-
-export async function fetchAllData() {
-    const assetList = await fetchAssetList();
-    const results = [];
-
-    for (const asset of assetList) {
-        const ticker = await fetchTicker(asset);
-        if (ticker) results.push(ticker);
-    }
-
-    return results;
-}
+// Primo avvio
+updateDashboard();
