@@ -1,0 +1,1 @@
+// highlightHotAssets module
