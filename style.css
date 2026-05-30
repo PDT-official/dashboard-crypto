@@ -1,1 +1,128 @@
-body { font-family: Arial, sans-serif; }
+/* ====== STILE GENERALE ====== */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0d1117;
+    color: #e6edf3;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #8b949e;
+}
+
+main {
+    padding: 20px;
+}
+
+/* ====== TABELLA ====== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead {
+    background-color: #21262d;
+}
+
+thead th {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #30363d;
+}
+
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #30363d;
+    font-size: 14px;
+}
+
+/* Alternanza righe */
+tbody tr:nth-child(even) {
+    background-color: #161b22;
+}
+
+/* Hover */
+tbody tr:hover {
+    background-color: #1f242d;
+}
+
+/* ====== COLORI SEGNALI ====== */
+
+.signal-green {
+    color: #3fb950;
+    font-weight: bold;
+}
+
+.signal-yellow {
+    color: #d29922;
+    font-weight: bold;
+}
+
+.signal-red {
+    color: #f85149;
+    font-weight: bold;
+}
+
+/* ====== FOOTER ====== */
+
+footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #8b949e;
+    border-top: 1px solid #30363d;
+}
+
+/* ====== RESPONSIVE ====== */
+
+@media (max-width: 600px) {
+    thead {
+        display: none;
+    }
+
+    table, tbody, tr, td {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        background-color: #161b22;
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    td {
+        border: none;
+        padding: 6px 0;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #8b949e;
+        display: block;
+        margin-bottom: 2px;
+    }
+}
+
