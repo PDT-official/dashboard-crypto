@@ -1,21 +1,21 @@
 // ====== fetchData.js ======
-// Modulo per ottenere i dati dagli exchange (Binance API) con proxy CORS
+// Versione stabile per GitHub Pages (con proxy AllOrigins)
 
-// Percorso corretto per GitHub Pages
+// Carica lista asset
 async function fetchAssetList() {
     try {
         const response = await fetch("./data/asset-list.json");
         return await response.json();
     } catch (error) {
-        console.error("Errore nel caricamento di asset-list.json:", error);
+        console.error("Errore asset-list.json:", error);
         return [];
     }
 }
 
-// Proxy per evitare CORS su Binance
+// Proxy AllOrigins
 function proxiedUrl(asset) {
     const binanceUrl = `https://api.binance.com/api/v3/ticker/24hr?symbol=${asset}`;
-    return `https://corsproxy.io/?${binanceUrl}`;
+    return `https://api.allorigins.win/raw?url=${encodeURIComponent(binanceUrl)}`;
 }
 
 async function fetchTicker(asset) {
