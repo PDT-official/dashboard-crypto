@@ -25,7 +25,6 @@ export async function fetchAllData(assetList) {
 
     const data = await response.json();
 
-    // Converte in array pulito
     return assetList.map(id => ({
       id,
       price: data[id]?.usd ?? 0,
@@ -39,31 +38,3 @@ export async function fetchAllData(assetList) {
     return [];
   }
 }
-
-// Funzione principale
-export async function updateDashboard() {
-  console.log("[INFO] Aggiornamento dati...");
-
-  const assetList = await loadAssetList();
-  if (assetList.length === 0) {
-    console.error("[ERRORE] Nessun asset trovato");
-    return;
-  }
-
-  const results = await fetchAllData(assetList);
-
-  console.log("[INFO] Dati aggiornati:", results);
-
-  // Chiama la UI
-  if (typeof updateUI === "function") {
-    updateUI(results);
-  } else {
-    console.warn("[ATTENZIONE] updateUI non definita");
-  }
-}
-
-// Aggiorna ogni 60 secondi
-setInterval(updateDashboard, 60000);
-
-// Primo avvio
-updateDashboard();
