@@ -3,13 +3,13 @@ export function computeSignals(rawData) {
         
         // TREND (basato sulla variazione % 24h)
         let trend = "laterale";
-        if (item.change > 2) trend = "rialzo";
-        if (item.change < -2) trend = "ribasso";
+        if (item.change24h > 2) trend = "rialzo";
+        if (item.change24h < -2) trend = "ribasso";
 
         // MOMENTUM (semplificato: variazione %)
         let momentum = "debole";
-        if (item.change > 1) momentum = "medio";
-        if (item.change > 3) momentum = "forte";
+        if (item.change24h > 1) momentum = "medio";
+        if (item.change24h > 3) momentum = "forte";
 
         // VOLUME (confronto con soglia fissa per ora)
         let volumeSignal = "normale";
@@ -23,7 +23,7 @@ export function computeSignals(rawData) {
         if (trend === "ribasso") signal = "rosso";
 
         return {
-            asset: item.asset,
+            id: item.id,
             price: item.price,
             trend: trend,
             volume: volumeSignal,
