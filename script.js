@@ -1,32 +1,44 @@
 // ====== script.js ======
-// Motore principale della dashboard
 
-import { updateDashboard } from "./modules/fetchData.js";
+import { fetchAllData } from "./modules/fetchData.js";
 import { computeSignals } from "./modules/computeSignals.js";
 import { renderTable } from "./modules/renderTable.js";
-import { highlightHotAssets } from "./modules/highlightHotAssets.js";
-import { logInfo, logError } from "./modules/utils.js";
 
-// Questa funzione verrà chiamata da fetchData.js
-window.updateUI = function (rawData) {
+// ====== PRICE HISTORY per gli sparkline ======
+const priceHistory = {}; // { id: [p1, p2, ...] }
+
+function updatePriceHistory(processedData) {
+    processedData.forEach(item => {
+        if (!priceHistory[item.id]) {
+            priceHistory[item.id] = [];
+        }
+
+        priceHistory[item.id].push(item.price);
+
+        // Manteniamo solo gli ultimi 30 punti
+        if (priceHistory[item.id].length > 30) {
+            priceHistory[item.id].shift();
+        }
+    });
+}
+
+// ====== UPDATE DASHBOARD ======
+async function updateDashboard() {
     try {
-        logInfo("Elaborazione dati...");
-
-        // 1) Calcolo segnali
+        const rawData = await fetchAllData();
         const processedData = computeSignals(rawData);
 
-        // 2) Render tabella
-        renderTable(processedData);
+        // Aggiorna la history per gli sparkline
+        updatePriceHistory(processedData);
 
-        // 3) Evidenzia asset caldi
-        highlightHotAssets(processedData);
-
-        logInfo("Dashboard aggiornata");
+        // Passiamo anche la history alla tabella
+        renderTable(processedData, priceHistory);
 
     } catch (error) {
-        logError("Errore durante l'aggiornamento della UI", error);
+        console.error("Errore aggiornamento dashboard:", error);
     }
-};
+}
 
-// Avvio dashboard (fetchData.js gestisce il timer)
+// ====== AUTO-REFRESH ======
 updateDashboard();
+setInterval(updateDashboard, 15000); // ogni 15 secondi
