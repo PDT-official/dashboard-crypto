@@ -15,7 +15,7 @@ export function renderTable(data) {
         if (item.signal === "rosso") signalClass = "signal-red";
 
         row.innerHTML = `
-            <td data-label="Asset">${item.asset}</td>
+            <td data-label="Asset">${item.id}</td>
             <td data-label="Prezzo">${item.price.toFixed(4)}</td>
             <td data-label="Trend">${item.trend}</td>
             <td data-label="Volume">${item.volume}</td>
