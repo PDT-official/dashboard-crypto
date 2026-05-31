@@ -1,68 +1,65 @@
 // ===============================
-//   FETCH DATA — COINGECKO
+//   FETCH DATA — VERSIONE OTTIMALE
 // ===============================
 
-// Lista asset (CoinGecko IDs)
-const assetList = [
-  "bitcoin",
-  "ethereum",
-  "binancecoin",
-  "cardano",
-  "ripple",
-  "solana",
-  "avalanche-2",
-  "polkadot",
-  "chainlink",
-  "polygon",
-  "cosmos",
-  "litecoin",
-  "ethereum-classic",
-  "stellar",
-  "near",
-  "aptos",
-  "arbitrum",
-  "optimism",
-  "filecoin",
-  "aave",
-  "ondo-finance"   // AGGIUNTO
-];
-
-// Funzione per ottenere i dati da CoinGecko
-async function fetchAssetData(assetId) {
+// Legge la lista asset dal JSON
+export async function loadAssetList() {
   try {
-    const url = `https://api.coingecko.com/api/v3/coins/${assetId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+    const response = await fetch("./data/asset-list.json");
+    if (!response.ok) throw new Error("Impossibile leggere asset-list.json");
+    return await response.json();
+  } catch (error) {
+    console.error("[ERRORE] Caricamento asset-list.json:", error);
+    return [];
+  }
+}
+
+// Fetch ottimizzato con /simple/price
+export async function fetchAllData(assetList) {
+  try {
+    const ids = assetList.join(",");
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true`;
 
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Errore CoinGecko: ${response.status}`);
 
     const data = await response.json();
 
-    return {
-      id: assetId,
-      price: data.market_data.current_price.usd,
-      change24h: data.market_data.price_change_percentage_24h,
-      volume: data.market_data.total_volume.usd,
-      marketCap: data.market_data.market_cap.usd
-    };
+    // Converte in array pulito
+    return assetList.map(id => ({
+      id,
+      price: data[id]?.usd ?? 0,
+      change24h: data[id]?.usd_24h_change ?? 0,
+      volume: data[id]?.usd_24h_vol ?? 0,
+      marketCap: data[id]?.usd_market_cap ?? 0
+    }));
 
   } catch (error) {
-    console.error(`[ERRORE] Asset ${assetId}:`, error);
-    return null;
+    console.error("[ERRORE] fetchAllData:", error);
+    return [];
   }
 }
 
-// Funzione principale per aggiornare la dashboard
-async function updateDashboard() {
-  console.log("[INFO] Aggiornamento dati in corso...");
+// Funzione principale
+export async function updateDashboard() {
+  console.log("[INFO] Aggiornamento dati...");
 
-  const results = await Promise.all(assetList.map(fetchAssetData));
+  const assetList = await loadAssetList();
+  if (assetList.length === 0) {
+    console.error("[ERRORE] Nessun asset trovato");
+    return;
+  }
 
-  const validResults = results.filter(r => r !== null);
+  const results = await fetchAllData(assetList);
 
-  console.log("[INFO] Dati aggiornati:", validResults);
+  console.log("[INFO] Dati aggiornati:", results);
 
-  // Qui aggiorni la UI
-  updateUI(validResults);
+  // Chiama la UI
+  if (typeof updateUI === "function") {
+    updateUI(results);
+  } else {
+    console.warn("[ATTENZIONE] updateUI non definita");
+  }
 }
 
 // Aggiorna ogni 60 secondi
