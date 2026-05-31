@@ -1,8 +1,8 @@
 // ===============================
-//   FETCH DATA — VERSIONE OTTIMALE
+//   FETCH DATA — VERSIONE PULITA
 // ===============================
 
-// Legge la lista asset dal JSON
+// 1) Legge la lista asset dal JSON
 export async function loadAssetList() {
   try {
     const response = await fetch("./data/asset-list.json");
@@ -14,7 +14,7 @@ export async function loadAssetList() {
   }
 }
 
-// Fetch ottimizzato con /simple/price
+// 2) Fetch ottimizzato con /simple/price
 export async function fetchAllData(assetList) {
   try {
     const ids = assetList.join(",");
@@ -25,6 +25,7 @@ export async function fetchAllData(assetList) {
 
     const data = await response.json();
 
+    // Converte in array pulito
     return assetList.map(id => ({
       id,
       price: data[id]?.usd ?? 0,
