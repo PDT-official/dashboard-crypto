@@ -1,40 +1,32 @@
 // ====== script.js ======
 // Motore principale della dashboard
 
-import { fetchAllData } from "./modules/fetchData.js";
+import { updateDashboard } from "./modules/fetchData.js";
 import { computeSignals } from "./modules/computeSignals.js";
 import { renderTable } from "./modules/renderTable.js";
 import { highlightHotAssets } from "./modules/highlightHotAssets.js";
 import { logInfo, logError } from "./modules/utils.js";
 
-// Intervallo aggiornamento (in millisecondi)
-const REFRESH_INTERVAL = 10000; // 10 secondi
-
-async function updateDashboard() {
+// Questa funzione verrà chiamata da fetchData.js
+window.updateUI = function (rawData) {
     try {
-        logInfo("Aggiornamento dati in corso...");
+        logInfo("Elaborazione dati...");
 
-        // 1) Fetch dati grezzi
-        const rawData = await fetchAllData();
-
-        // 2) Calcolo segnali
+        // 1) Calcolo segnali
         const processedData = computeSignals(rawData);
 
-        // 3) Render tabella
+        // 2) Render tabella
         renderTable(processedData);
 
-        // 4) Evidenzia asset caldi
+        // 3) Evidenzia asset caldi
         highlightHotAssets(processedData);
 
         logInfo("Dashboard aggiornata");
 
     } catch (error) {
-        logError("Errore durante l'aggiornamento della dashboard", error);
+        logError("Errore durante l'aggiornamento della UI", error);
     }
-}
+};
 
-// Primo avvio
+// Avvio dashboard (fetchData.js gestisce il timer)
 updateDashboard();
-
-// Aggiornamento automatico
-setInterval(updateDashboard, REFRESH_INTERVAL);
