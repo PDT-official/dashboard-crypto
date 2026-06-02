@@ -2,42 +2,40 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Crypto</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
 <body>
 
-    <header>
-        <h1>Dashboard Crypto – Monitoraggio Automatico</h1>
-        <p>20 asset in osservazione continua</p>
-    </header>
+    <h1>Dashboard Crypto</h1>
 
-    <main>
-        <table id="assetTable">
-            <thead>
-                <tr>
-                    <th>Asset</th>
-                    <th>Prezzo</th>
-                    <th>Trend</th>
-                    <th>Volume</th>
-                    <th>Momentum</th>
-                    <th>Segnale</th>
-                </tr>
-            </thead>
+    <table>
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Prezzo</th>
+                <th>Trend</th>
+                <th>Volume</th>
+                <th>Momentum</th>
+                <th>Segnale</th>
+                <th>Grafico</th>
+            </tr>
+        </thead>
+        <tbody id="assetTableBody"></tbody>
+    </table>
 
-            <tbody id="assetTableBody">
-                <!-- I dati verranno inseriti automaticamente da renderTable.js -->
-            </tbody>
-        </table>
-    </main>
+    <!-- ========================= -->
+    <!-- 1) CARICA CHART.JS QUI   -->
+    <!-- ========================= -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <footer>
-        <p>Dashboard Crypto – Powered by GitHub Pages</p>
-    </footer>
-
-    <!-- Moduli -->
-   <script type="module" src="script.js"></script>
+    <!-- ========================= -->
+    <!-- 2) POI I TUOI MODULI JS  -->
+    <!-- ========================= -->
+    <script type="module" src="./js/script.js"></script>
 
 </body>
 </html>
