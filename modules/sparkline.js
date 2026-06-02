@@ -1,16 +1,20 @@
 // ====== sparkline.js ======
-// Mini grafici per ogni asset (Chart.js)
-
 const charts = new Map();
 
 export function renderSparkline(canvas, history, color = "#4caf50") {
     if (!canvas || !history || history.length === 0) return;
 
-    // Se esiste già un grafico su questo canvas → distruggilo
+    // Se il grafico ESISTE → aggiorna i dati
     if (charts.has(canvas)) {
-        charts.get(canvas).destroy();
+        const chart = charts.get(canvas);
+        chart.data.labels = history.map((_, i) => i + 1);
+        chart.data.datasets[0].data = history;
+        chart.data.datasets[0].borderColor = color;
+        chart.update();
+        return;
     }
 
+    // Altrimenti → crealo
     const ctx = canvas.getContext("2d");
 
     const chart = new Chart(ctx, {
