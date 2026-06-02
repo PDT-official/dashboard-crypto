@@ -14,13 +14,13 @@ export function renderTable(data, priceHistory) {
         if (item.signal === "rosso") signalClass = "signal-red";
 
         row.innerHTML = `
-            <td data-label="Asset">${item.id}</td>
-            <td data-label="Prezzo">${item.price.toFixed(4)}</td>
-            <td data-label="Trend">${item.trend}</td>
-            <td data-label="Volume">${item.volume}</td>
-            <td data-label="Momentum">${item.momentum}</td>
-            <td data-label="Segnale" class="${signalClass}">${item.signal}</td>
-            <td data-label="Grafico">
+            <td>${item.id}</td>
+            <td>${item.price.toFixed(4)}</td>
+            <td>${item.trend}</td>
+            <td>${item.volume}</td>
+            <td>${item.momentum}</td>
+            <td class="${signalClass}">${item.signal}</td>
+            <td>
                 <div class="sparkline-wrapper">
                     <canvas id="spark-${item.id}"></canvas>
                 </div>
@@ -29,7 +29,6 @@ export function renderTable(data, priceHistory) {
 
         tableBody.appendChild(row);
 
-        // Sparkline
         const canvas = row.querySelector("canvas");
         const history = priceHistory[item.id] || [];
 
