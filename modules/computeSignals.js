@@ -1,34 +1,7 @@
-export function computeSignals(rawData) {
-    return rawData.map(item => {
-        
-        // TREND (basato sulla variazione % 24h)
-        let trend = "laterale";
-        if (item.change24h > 2) trend = "rialzo";
-        if (item.change24h < -2) trend = "ribasso";
+// ====== computeSignals.js ======
 
-        // MOMENTUM (semplificato: variazione %)
-        let momentum = "debole";
-        if (item.change24h > 1) momentum = "medio";
-        if (item.change24h > 3) momentum = "forte";
-
-        // VOLUME (confronto con soglia fissa per ora)
-        let volumeSignal = "normale";
-        if (item.volume > 500000) volumeSignal = "alto";
-        if (item.volume < 50000) volumeSignal = "basso";
-
-        // SEGNALE FINALE (logica semplice)
-        let signal = "neutro";
-        if (trend === "rialzo" && momentum === "forte") signal = "verde";
-        if (trend === "rialzo" && momentum === "medio") signal = "giallo";
-        if (trend === "ribasso") signal = "rosso";
-
-        return {
-            id: item.id,
-            price: item.price,
-            trend: trend,
-            volume: volumeSignal,
-            momentum: momentum,
-            signal: signal
-        };
-    });
+export function computeSignals(change24h) {
+    if (change24h > 2) return "verde";
+    if (change24h < -2) return "rosso";
+    return "giallo";
 }
