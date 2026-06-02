@@ -1,51 +1,58 @@
 // ====== script.js ======
 
-import { loadAssetList, fetchAllData } from "./modules/fetchData.js";
-import { renderTable } from "./modules/renderTable.js";
+import { fetchAllData, loadAssetList } from "./fetchData.js";
+import { renderTable } from "./renderTable.js";
 
-let priceHistory = {};   // storico prezzi per gli sparkline
+// Oggetto per salvare lo storico prezzi
+const priceHistory = {};
 
 // ===============================
-//  FUNZIONE PRINCIPALE DASHBOARD
+//  FETCH STORICO PREZZI (7 giorni)
 // ===============================
-async function updateDashboard() {
-    console.log("UPDATE DASHBOARD");
-
+async function fetchPriceHistory(assetId) {
     try {
-        const assetList = loadAssetList();
-        const data = await fetchAllData(assetList);
+        const url = `https://api.coingecko.com/api/v3/coins/${assetId}/market_chart?vs_currency=usd&days=7`;
+        const response = await fetch(url);
 
-        console.log("DATA:", data);
-
-        if (!data || data.length === 0) {
-            console.warn("Nessun dato ricevuto da CoinGecko");
-            return;
+        if (!response.ok) {
+            throw new Error(`Errore storico ${assetId}: ${response.status}`);
         }
 
-        // Aggiorna storico prezzi
-        data.forEach(item => {
-            if (!priceHistory[item.id]) priceHistory[item.id] = [];
+        const data = await response.json();
 
-            priceHistory[item.id].push(item.price);
-
-            // Mantieni solo gli ultimi 50 valori
-            if (priceHistory[item.id].length > 50) {
-                priceHistory[item.id].shift();
-            }
-        });
-
-        // Aggiorna tabella + grafici
-        renderTable(data, priceHistory);
+        // Estraggo solo i prezzi
+        return data.prices.map(p => p[1]);
 
     } catch (error) {
-        console.error("ERRORE updateDashboard:", error);
+        console.error("[ERRORE] fetchPriceHistory:", error);
+        return [];
     }
 }
 
 // ===============================
-//  AVVIO DASHBOARD
+//  AGGIORNA DASHBOARD
+// ===============================
+async function updateDashboard() {
+    console.log("Aggiornamento dashboard...");
+
+    // 1) Dati principali
+    const data = await fetchAllData();
+
+    // 2) Storico prezzi per ogni asset
+    const assets = loadAssetList();
+
+    for (const asset of assets) {
+        priceHistory[asset] = await fetchPriceHistory(asset);
+    }
+
+    // 3) Render tabella
+    renderTable(data, priceHistory);
+}
+
+// ===============================
+//  AVVIO
 // ===============================
 updateDashboard();
 
-// Aggiornamento ogni 5 secondi
-setInterval(updateDashboard, 5000);
+// Aggiorna ogni 60 secondi
+setInterval(updateDashboard, 60000);
