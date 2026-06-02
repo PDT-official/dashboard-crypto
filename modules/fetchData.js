@@ -1,41 +1,75 @@
-// ===============================
-//   FETCH DATA — VERSIONE PULITA
-// ===============================
+// ====== fetchData.js ======
 
-// 1) Legge la lista asset dal JSON
-export async function loadAssetList() {
-  try {
-    const response = await fetch("./data/asset-list.json");
-    if (!response.ok) throw new Error("Impossibile leggere asset-list.json");
-    return await response.json();
-  } catch (error) {
-    console.error("[ERRORE] Caricamento asset-list.json:", error);
-    return [];
-  }
-}
+// Lista asset (CoinGecko IDs)
+const assetList = [
+  "bitcoin",
+  "ethereum",
+  "binancecoin",
+  "cardano",
+  "ripple",
+  "solana",
+  "avalanche-2",
+  "polkadot",
+  "chainlink",
+  "polygon",
+  "cosmos",
+  "litecoin",
+  "ethereum-classic",
+  "stellar",
+  "near",
+  "aptos",
+  "arbitrum",
+  "optimism",
+  "filecoin",
+  "aave",
+  "ondo-finance"
+];
 
-// 2) Fetch ottimizzato con /simple/price
-export async function fetchAllData(assetList) {
+// ===============================
+//  FUNZIONE PRINCIPALE
+// ===============================
+export async function fetchAllData() {
   try {
     const ids = assetList.join(",");
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true`;
+
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&sparkline=false&price_change_percentage=24h`;
 
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`Errore CoinGecko: ${response.status}`);
+
+    if (!response.ok) {
+      throw new Error(`Errore CoinGecko: ${response.status}`);
+    }
 
     const data = await response.json();
 
-    // Converte in array pulito
-    return assetList.map(id => ({
-      id,
-      price: data[id]?.usd ?? 0,
-      change24h: data[id]?.usd_24h_change ?? 0,
-      volume: data[id]?.usd_24h_vol ?? 0,
-      marketCap: data[id]?.usd_market_cap ?? 0
+    // Normalizziamo i dati per la dashboard
+    return data.map(asset => ({
+      id: asset.id,
+      price: asset.current_price,
+      trend: asset.price_change_percentage_24h?.toFixed(2) + "%",
+      volume: asset.total_volume,
+      momentum: asset.market_cap_change_percentage_24h?.toFixed(2) + "%",
+      signal: getSignal(asset.price_change_percentage_24h)
     }));
 
   } catch (error) {
     console.error("[ERRORE] fetchAllData:", error);
     return [];
   }
+}
+
+// ===============================
+//  FUNZIONE SEGNALE
+// ===============================
+function getSignal(change24h) {
+  if (change24h > 2) return "verde";
+  if (change24h < -2) return "rosso";
+  return "giallo";
+}
+
+// ===============================
+//  ESPORTA LISTA ASSET
+// ===============================
+export function loadAssetList() {
+  return assetList;
 }
