@@ -1,132 +1,81 @@
-/* ====== STILE GENERALE ====== */
+/* ======== TEMA TRADINGVIEW ======== */
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #0d1117;
-    color: #e6edf3;
+    background: #0e1114;
+    color: #d1d4dc;
+    font-family: "Inter", "Roboto", sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px;
 }
 
-header {
+h1 {
     text-align: center;
-    padding: 20px;
-    background-color: #161b22;
-    border-bottom: 1px solid #30363d;
+    color: #e0e3eb;
+    margin-bottom: 20px;
+    font-weight: 500;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 26px;
-}
-
-header p {
-    margin: 5px 0 0;
-    font-size: 14px;
-    color: #8b949e;
-}
-
-main {
-    padding: 20px;
-}
-
-/* ====== TABELLA ====== */
+/* ======== TABELLA ======== */
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    background: #131722;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-thead {
-    background-color: #21262d;
+th {
+    background: #1e222d;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #9aa0a6;
+    border-bottom: 1px solid #2a2e39;
 }
 
-thead th {
-    padding: 12px;
-    text-align: left;
+td {
+    padding: 6px 10px;
     font-size: 14px;
-    border-bottom: 1px solid #30363d;
+    border-bottom: 1px solid #1c1f26;
 }
 
-tbody td {
-    padding: 10px;
-    border-bottom: 1px solid #30363d;
-    font-size: 14px;
+tr:hover {
+    background: #1a1f2b;
 }
 
-/* Alternanza righe */
-tbody tr:nth-child(even) {
-    background-color: #161b22;
-}
-
-/* Hover */
-tbody tr:hover {
-    background-color: #1f242d;
-}
-
-/* ====== COLORI SEGNALI ====== */
+/* ======== SEGNALI ======== */
 
 .signal-green {
-    color: #3fb950;
-    font-weight: bold;
+    color: #00c176;
+    font-weight: 600;
 }
 
 .signal-yellow {
-    color: #d29922;
-    font-weight: bold;
+    color: #e6c229;
+    font-weight: 600;
 }
 
 .signal-red {
-    color: #f85149;
-    font-weight: bold;
+    color: #ff4d4d;
+    font-weight: 600;
 }
 
-/* ====== FOOTER ====== */
+/* ======== SPARKLINE ======== */
 
-footer {
-    text-align: center;
-    padding: 15px;
-    margin-top: 20px;
-    font-size: 12px;
-    color: #8b949e;
-    border-top: 1px solid #30363d;
+.sparkline-wrapper {
+    width: 120px;
+    height: 40px;
 }
 
-/* ====== RESPONSIVE ====== */
-
-@media (max-width: 600px) {
-    thead {
-        display: none;
-    }
-
-    table, tbody, tr, td {
-        display: block;
-        width: 100%;
-    }
-
-    tr {
-        margin-bottom: 15px;
-        background-color: #161b22;
-        padding: 10px;
-        border-radius: 6px;
-    }
-
-    td {
-        border: none;
-        padding: 6px 0;
-    }
-
-    td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        color: #8b949e;
-        display: block;
-        margin-bottom: 2px;
-    }
-}
-.hot-asset {
-    border-left: 4px solid #3fb950;
-    background-color: rgba(63, 185, 80, 0.1);
+canvas {
+    width: 100% !important;
+    height: 40px !important;
 }
 
+/* ======== RIGHE COMPATTE ======== */
+
+tr {
+    height: 34px;
+}
