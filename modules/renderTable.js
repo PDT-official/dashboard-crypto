@@ -22,7 +22,7 @@ export function renderTable(data, priceHistory) {
             <td data-label="Segnale" class="${signalClass}">${item.signal}</td>
             <td data-label="Grafico">
                 <div class="sparkline-wrapper">
-                    <canvas></canvas>
+                    <canvas id="spark-${item.id}"></canvas>
                 </div>
             </td>
         `;
