@@ -5,34 +5,51 @@ export function renderSparkline(canvas, data, color = "#4caf50") {
 
     const isFallback = data.every(v => v === 0);
 
-    // Se è fallback → scriviamo testo nel canvas
+    // ===== FALLBACK CON TICKER MULTILINGUA =====
     if (isFallback) {
         const ctx = canvas.getContext("2d");
+        const w = canvas.width;
+        const h = canvas.height;
 
-        // Pulizia
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Testo multilingua (8 lingue)
+        const message = [
+            "Nessun dato allo stato attuale",
+            "No data available",
+            "No hay datos disponibles",
+            "Aucune donnée disponible",
+            "Keine Daten verfügbar",
+            "Данные недоступны",
+            "当前无数据",
+            "データがありません"
+        ].join("   •   ");
 
-        ctx.fillStyle = "#888";
         ctx.font = "18px Inter, sans-serif";
-        ctx.textAlign = "center";
+        ctx.fillStyle = "#888";
         ctx.textBaseline = "middle";
 
-        // Testo multilingua
-        const msg = "Nessun dato allo stato attuale\nNo data available\n当前无数据";
+        let x = w; // parte da destra
 
-        // Disegno multilinea
-        const lines = msg.split("\n");
-        const lineHeight = 12;
-        const startY = canvas.height / 2 - (lines.length - 1) * lineHeight / 2;
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
 
-        lines.forEach((line, i) => {
-            ctx.fillText(line, canvas.width / 2, startY + i * lineHeight);
-        });
+            // Disegna il testo
+            ctx.fillText(message, x, h / 2);
 
-        return; // Non disegnare grafico
+            // Movimento verso sinistra
+            x -= 1.5;
+
+            // Quando esce dallo schermo → ricomincia da destra
+            const textWidth = ctx.measureText(message).width;
+            if (x < -textWidth) x = w;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+        return;
     }
 
-    // Se NON è fallback → disegna grafico normale
+    // ===== GRAFICO NORMALE =====
     new Chart(canvas, {
         type: "line",
         data: {
