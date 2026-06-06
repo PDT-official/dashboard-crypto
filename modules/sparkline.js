@@ -1,9 +1,38 @@
 // ====== sparkline.js ======
-// Mini grafici stile TradingView (Chart.js)
 
 export function renderSparkline(canvas, data, color = "#4caf50") {
-    if (!canvas || !data || data.length === 0) return;
+    if (!canvas || !data) return;
 
+    const isFallback = data.every(v => v === 0);
+
+    // Se è fallback → scriviamo testo nel canvas
+    if (isFallback) {
+        const ctx = canvas.getContext("2d");
+
+        // Pulizia
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#888";
+        ctx.font = "10px Inter, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // Testo multilingua
+        const msg = "Nessun dato allo stato attuale\nNo data available\n当前无数据";
+
+        // Disegno multilinea
+        const lines = msg.split("\n");
+        const lineHeight = 12;
+        const startY = canvas.height / 2 - (lines.length - 1) * lineHeight / 2;
+
+        lines.forEach((line, i) => {
+            ctx.fillText(line, canvas.width / 2, startY + i * lineHeight);
+        });
+
+        return; // Non disegnare grafico
+    }
+
+    // Se NON è fallback → disegna grafico normale
     new Chart(canvas, {
         type: "line",
         data: {
@@ -17,8 +46,8 @@ export function renderSparkline(canvas, data, color = "#4caf50") {
             }]
         },
         options: {
-            responsive: false,            // <— BLOCCA Chart.js
-            maintainAspectRatio: false,   // <— BLOCCA Chart.js
+            responsive: false,
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
                 tooltip: { enabled: false }
