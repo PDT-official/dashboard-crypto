@@ -1,6 +1,3 @@
-// ====== renderTable.js ======
-import { renderSparkline } from "./sparkline.js";
-
 export function renderTable(data, priceHistory) {
     const tableBody = document.getElementById("assetTableBody");
     tableBody.innerHTML = "";
@@ -14,12 +11,28 @@ export function renderTable(data, priceHistory) {
         if (item.signal === "rosso") signalClass = "signal-red";
 
         row.innerHTML = `
-            <td>${item.id}</td>
+            <td>
+                ${item.id}
+                <span style="
+                    background:#eef;
+                    color:#334;
+                    padding:2px 6px;
+                    border-radius:6px;
+                    font-size:11px;
+                    margin-left:8px;
+                    font-weight:600;
+                    display:inline-block;
+                ">
+                    ${item.symbol}
+                </span>
+            </td>
+
             <td>${item.price.toFixed(4)}</td>
             <td>${item.trend}</td>
             <td>${item.volume}</td>
             <td>${item.momentum}</td>
             <td class="${signalClass}">${item.signal}</td>
+
             <td>
                 <div class="sparkline-wrapper">
                     <canvas id="spark-${item.id}"></canvas>
