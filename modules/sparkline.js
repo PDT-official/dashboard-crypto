@@ -13,7 +13,7 @@ export function renderSparkline(canvas, data, color = "#4caf50") {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = "#888";
-        ctx.font = "13px Inter, sans-serif";
+        ctx.font = "18px Inter, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
