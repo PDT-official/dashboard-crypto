@@ -94,3 +94,54 @@ tr {
     letter-spacing: 1px;
     margin: 0 0 20px 0;
 }
+/* HEADER ORO SU NERO */
+.gold-header {
+    background: #000;
+    padding: 20px 0;
+    position: relative;
+    text-align: center;
+}
+
+/* TITOLO ORO */
+.gold-title {
+    color: #d4af37;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* LOGO PDT — ANIMAZIONE COMBINATA (PULSE + GLOW) */
+.pdt-logo {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    opacity: 0.95;
+    animation: pdtCombo 3s ease-in-out infinite;
+}
+
+/* COMBO: leggero ingrandimento + glow dorato */
+@keyframes pdtCombo {
+    0% {
+        transform: translateY(-50%) scale(1);
+        filter: drop-shadow(0 0 2px #d4af37);
+    }
+    25% {
+        transform: translateY(-50%) scale(1.05);
+        filter: drop-shadow(0 0 6px #ffd700);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.1);
+        filter: drop-shadow(0 0 12px #ffea8a);
+    }
+    75% {
+        transform: translateY(-50%) scale(1.05);
+        filter: drop-shadow(0 0 6px #ffd700);
+    }
+    100% {
+        transform: translateY(-50%) scale(1);
+        filter: drop-shadow(0 0 2px #d4af37);
+    }
+}
