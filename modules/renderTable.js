@@ -1,6 +1,19 @@
+// ====== renderTable.js ======
+import { renderSparkline } from "./sparkline.js";
+
 export function renderTable(data, priceHistory) {
     const tableBody = document.getElementById("assetTableBody");
     tableBody.innerHTML = "";
+
+    // Mappa ticker → evita undefined
+    const symbols = {
+        bitcoin: "BTC-USDC",
+        ethereum: "ETH-USDC",
+        binancecoin: "BNB-USDC",
+        ripple: "XRP-USDC",
+        solana: "SOL-USDC",
+        stellar: "XLM-USDC"
+    };
 
     data.forEach(item => {
         const row = document.createElement("tr");
@@ -23,7 +36,7 @@ export function renderTable(data, priceHistory) {
                     font-weight:600;
                     display:inline-block;
                 ">
-                    ${item.symbol}
+                    ${symbols[item.id] || ""}
                 </span>
             </td>
 
