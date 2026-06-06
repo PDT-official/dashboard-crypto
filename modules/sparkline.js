@@ -23,7 +23,7 @@ export function renderSparkline(canvas, data, color = "#4caf50") {
             "データがありません"
         ].join("   •   ");
 
-        ctx.font = "28px Inter, sans-serif";
+        ctx.font = "38px Inter, sans-serif";
         ctx.fillStyle = "#888";
         ctx.textBaseline = "middle";
 
