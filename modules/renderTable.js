@@ -74,9 +74,9 @@ export function renderTable(data, priceHistory) {
         const history = priceHistory[item.id] || [];
 
         const color =
-            item.signal === "verde" ? "#4caf50" :
-            item.signal === "rosso" ? "#f44336" :
-            "#9e9e9e";
+    item.signal === "verde" ? "#00c853" :      // verde
+    item.signal === "rosso" ? "#d50000" :      // rosso
+    "#fdd835";                                 // giallo oro
 
         renderSparkline(canvas, history, color);
     });
