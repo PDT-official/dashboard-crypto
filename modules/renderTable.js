@@ -7,13 +7,28 @@ export function renderTable(data, priceHistory) {
 
     // Mappa ticker → evita undefined
     const symbols = {
-        bitcoin: "BTC-USDC",
-        ethereum: "ETH-USDC",
-        binancecoin: "BNB-USDC",
-        ripple: "XRP-USDC",
-        solana: "SOL-USDC",
-        stellar: "XLM-USDC"
-    };
+    bitcoin: "BTC-USDC",
+    ethereum: "ETH-USDC",
+    binancecoin: "BNB-USDC",
+    cardano: "ADA-USDC",
+    ripple: "XRP-USDC",
+    solana: "SOL-USDC",
+    "avalanche-2": "AVAX-USDC",
+    polkadot: "DOT-USDC",
+    chainlink: "LINK-USDC",
+    polygon: "MATIC-USDC",
+    cosmos: "ATOM-USDC",
+    litecoin: "LTC-USDC",
+    "ethereum-classic": "ETC-USDC",
+    stellar: "XLM-USDC",
+    near: "NEAR-USDC",
+    aptos: "APT-USDC",
+    arbitrum: "ARB-USDC",
+    optimism: "OP-USDC",
+    filecoin: "FIL-USDC",
+    aave: "AAVE-USDC",
+    "ondo-finance": "ONDO-USDC"
+};
 
     data.forEach(item => {
         const row = document.createElement("tr");
