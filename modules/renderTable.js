@@ -77,6 +77,7 @@ export function renderTable(data, priceHistory) {
     item.signal === "verde" ? "#00c853" :      // verde
     item.signal === "rosso" ? "#d50000" :      // rosso
     "#fdd835";                                 // giallo oro
-renderSparkline(canvas, item.history, color);
+renderSparkline(canvas, history, color);
+
     });
 }
